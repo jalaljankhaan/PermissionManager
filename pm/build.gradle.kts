@@ -63,7 +63,10 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/jalaljankhaan/PermissionManager")
             credentials {
-                username = System.getenv("GITHUB_USERNAME")
+                // Only set username if the environment variable is present
+                if (System.getenv("GITHUB_USERNAME") != null) {
+                    username = System.getenv("GITHUB_USERNAME")
+                }
                 password = System.getenv("GITHUB_TOKEN")
             }
         }
