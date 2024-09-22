@@ -60,7 +60,7 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/jalaljankhaan/PermissionManager")
             credentials {
-                username = System.getenv("USERNAME")
+                username = "jalaljankhaan"
                 password = System.getenv("SECRET_TOKEN")
             }
         }
