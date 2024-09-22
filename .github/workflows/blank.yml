@@ -1,0 +1,59 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Publish Permission Manager Library
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  publish:
+    # The type of runner that the job will run on
+    name: Setting up publishing library
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Setup Java JDK 21
+        uses: actions@setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Checking out to branch main
+        uses: actions/checkout@v4
+
+      - name: Cache Gradle and Wrapper
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/.gradle*') }}
+          restore-key: |
+            ${{ runner.os }}-gradle-
+
+      - name: Grant permission for Gradlew to execute
+        run: chmod +x gradlew
+
+      - name: Build AAR
+        run: bash ./gradlew :pm:assemble
+
+      - name: Publish to GitHub Packages
+        run: bash ./gradlew :pm:publish
+        env:
+          GITHUB_USER: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
+        
+            
