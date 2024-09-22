@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.jalaljankhan.azpermissionmanager"
+    namespace = "com.jalaljankhan.pm"
     compileSdk = 35
 
     defaultConfig {
@@ -29,7 +29,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "21"
     }
 }
 

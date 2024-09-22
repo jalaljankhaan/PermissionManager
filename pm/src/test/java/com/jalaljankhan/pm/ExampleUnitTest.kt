@@ -1,4 +1,4 @@
-package com.jalaljankhan.azpermissionmanager
+package com.jalaljankhan.pm
 
 import org.junit.Test
 

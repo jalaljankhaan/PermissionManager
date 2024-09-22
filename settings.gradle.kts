@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "PermissionManager"
 include(":app")
-include(":AZPermissionManager")
+include(":pm")
