@@ -1,5 +1,3 @@
-import org.bouncycastle.cms.RecipientId.password
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -65,8 +63,7 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/jalaljankhaan/PermissionManager")
             credentials {
-                // Only set username if the environment variable is present
-                username = System.getenv("GITHUB_USERNAME") ?: "jalaljankhaan"
+                username = System.getenv("GITHUB_USERNAME")
                 password = System.getenv("GITHUB_TOKEN")
             }
         }
