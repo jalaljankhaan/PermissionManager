@@ -31,6 +31,7 @@ android {
     kotlinOptions {
         jvmTarget = "21"
     }
+
 }
 
 dependencies {
@@ -54,14 +55,16 @@ afterEvaluate {
     }
 }
 
+//val dotenv = io.github.cdimascio.dotenv.Dotenv.load()
+
 publishing {
     repositories {
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/jalaljankhaan/PermissionManager")
             credentials {
-                username = "jalaljankhaan"
-                password = "AjL_N6576"
+                username = System.getenv("GITHUB_USERNAME")
+                password = System.getenv("GITHUB_TOKEN")
             }
         }
     }
