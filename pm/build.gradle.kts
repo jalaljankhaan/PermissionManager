@@ -43,7 +43,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 }
 
-afterEvaluate {
+/*afterEvaluate {
     android.libraryVariants.forEach { variant ->
         publishing.publications.create(variant.name, MavenPublication::class.java) {
             from(components.findByName(variant.name))
@@ -53,10 +53,11 @@ afterEvaluate {
             version = "1.0.0"
         }
     }
-}
+}*/
 
 //val dotenv = io.github.cdimascio.dotenv.Dotenv.load()
 
+/*
 publishing {
     repositories {
         maven {
@@ -68,4 +69,4 @@ publishing {
             }
         }
     }
-}
+}*/
