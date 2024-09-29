@@ -26,7 +26,7 @@ jobs:
         run: ./gradlew build
 
       - name: Uploading build artifact
-        uses: actions/upload-artifact@v3.1.3
+        uses: actions/upload-artifact@v4
         with:
           name: azpm.apk
           path: app/build/outputs/apk/debug/app-debug.apk
