@@ -53,6 +53,7 @@ afterEvaluate {
                     groupId = variant.applicationId
                     artifactId = "pm-${variant.name}"
                     version = "1.0.0"
+                    artifact(variant.dirName + "/build/outputs/aar/${variant.name}.aar")
                 }
             }
         }
