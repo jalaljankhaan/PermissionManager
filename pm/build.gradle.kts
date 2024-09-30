@@ -43,30 +43,31 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 }
 
-/*afterEvaluate {
-    android.libraryVariants.forEach { variant ->
-        publishing.publications.create(variant.name, MavenPublication::class.java) {
-            from(components.findByName(variant.name))
+afterEvaluate {
+    publishing {
+        publications {
+            android.libraryVariants.forEach { variant ->
+                create(variant.name, MavenPublication::class.java) {
+                    from(components[variant.name])
 
-            groupId = "com.jalaljankhan.pm"
-            artifactId = "pm"
-            version = "1.0.0"
+                    groupId = variant.applicationId
+                    artifactId = "pm-${variant.name}"
+                    version = "1.0.0"
+                }
+            }
         }
     }
-}*/
+}
 
-//val dotenv = io.github.cdimascio.dotenv.Dotenv.load()
-
-/*
 publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/jalaljankhaan/PermissionManager")
+            url = uri("https://maven.pkg.github.com/${System.getenv("GITHUB_REPOSITORY")}")
             credentials {
                 username = System.getenv("GITHUB_USERNAME")
                 password = System.getenv("GITHUB_TOKEN")
             }
         }
     }
-}*/
+}
