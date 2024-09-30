@@ -51,7 +51,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: azpm.aar
-          path: /Users/apple/Development/Android/PermissionManager/pm/build/outputs/aar/pm-release.aar
+          path: pm/build/outputs/aar/pm-release.aar
 
       - name: Publish to GitHub packages
         run: ./gradlew :pm:publish
