@@ -54,7 +54,7 @@ jobs:
           path: pm/build/outputs/aar/pm-release.aar
 
       - name: Publish to GitHub packages
-        run: ./gradlew :pm:publish
+        run: ./gradlew :pm:publishReleasePublicationToGitHubPackagesRepository
         env:
           GITHUB_USERNAME: ${{ secrets.SECRET_ACTOR }}
           GITHUB_REPOSITORY: ${{ secrets.SECRET_REPOSITORY }}
