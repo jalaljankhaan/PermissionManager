@@ -7,9 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.itsazcoding.permissionmanager.databinding.ActivityMainBinding
+import com.jalaljankhan.pm.AndroidPermissionManager
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
+
+    val permissionManager = AndroidPermissionManager.from(this@MainActivity) { isGranted ->
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
