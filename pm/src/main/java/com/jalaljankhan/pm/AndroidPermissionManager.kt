@@ -1,57 +1,59 @@
 package com.jalaljankhan.pm
 
-import android.app.Activity
-import android.content.pm.PackageManager
+import android.os.Build
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
-import androidx.core.content.ContextCompat.checkSelfPermission
+import androidx.fragment.app.FragmentActivity
 
-class AndroidPermissionManager : PermissionManager {
-    private var mPermissionsResult: ((granted: Boolean) -> Unit)? = null
-    private lateinit var mPermissionLauncher: ActivityResultLauncher<Array<String>>
+class AndroidPermissionManager private constructor(
+    private val mPermissionLauncher: ActivityResultLauncher<Array<String>>
+) : PermissionManager {
+    companion object {
+        fun from(
+            activity: AppCompatActivity,
+            onPermissionResult: (permissionsStates: PermissionResult) -> Unit
+        ): PermissionManager {
+            val launcher =
+                activity.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
+                    val granted = result?.entries?.filter { it.value }?.map { PermissionMapper().toPermission(it.key) }
+                    val denied = result?.entries?.filter { !it.value }?.map { PermissionMapper().toPermission(it.key) }
 
-    override fun onPermitted(result: (granted: Boolean) -> Unit) {
-        mPermissionsResult = result
-    }
+                    onPermissionResult.invoke(PermissionResult(grantedPermissions = granted, deniedPermissions = denied))
+                }
 
-    override fun initialize(context: AppCompatActivity) {
-        mPermissionLauncher = context.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
-            result.entries.forEach {
-                println("${it.key} = ${it.value}")
-            }
+            return AndroidPermissionManager(launcher)
+        }
 
-            mPermissionsResult?.invoke(result.values.all { it })
+        fun from(
+            fragment: FragmentActivity,
+            onPermissionResult: (isGranted: Boolean) -> Unit
+        ): PermissionManager {
+            val launcher =
+                fragment.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
+                    result.entries.forEach {
+                        println("${it.key} = ${it.value}")
+                    }
+
+                    onPermissionResult.invoke(result.values.all { it })
+                }
+
+            return AndroidPermissionManager(launcher)
         }
     }
 
-    //    private var mPermissionLauncher: ActivityResultLauncher<>
     override fun request(
-        context: AppCompatActivity,
-        permissions: Array<String>
+        vararg permissions: Permission
     ) {
-        mPermissionLauncher.launch(permissions)
+        mPermissionLauncher.launch(toPermissionValues(permissions))
     }
 
-    override fun permissionsPermanentlyDenied(
-        context: Activity,
-        vararg permissions: String
-    ): Boolean {
-        return permissions.all { permission ->
-            checkSelfPermission(
-                context,
-                permission
-            ) == PackageManager.PERMISSION_DENIED && !shouldShowRequestPermissionRationale(
-                context,
-                permission
-            )
-        }
+    private fun isSupported(permission: Permission): Boolean {
+        return Build.VERSION.SDK_INT >= permission.minSdk
     }
 
-    override fun permissionsGranted(context: Activity, vararg permissions: String): Boolean {
-        return permissions.all {
-            checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
-        }
+    private fun toPermissionValues(permissions: Array<out Permission>): Array<String> {
+        return permissions.filter { isSupported(it) }.map { it.value }.toTypedArray()
     }
+
 }

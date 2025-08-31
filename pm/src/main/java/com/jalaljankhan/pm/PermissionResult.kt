@@ -1,12 +1,12 @@
 package com.jalaljankhan.pm
 
 data class PermissionResult(
-    val grantedPermissions: Set<Permission>,
-    val deniedPermissions: Set<Permission>,
+    val grantedPermissions: List<Permission>?,
+    val deniedPermissions: List<Permission>?,
 ) {
     val allGranted: Boolean
-        get() = grantedPermissions.isNotEmpty()
+        get() = !grantedPermissions.isNullOrEmpty()
 
     val allDenied: Boolean
-        get() = deniedPermissions.isNotEmpty()
+        get() = !deniedPermissions.isNullOrEmpty()
 }
