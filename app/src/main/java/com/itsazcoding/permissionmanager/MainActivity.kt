@@ -12,8 +12,10 @@ import com.jalaljankhan.pm.AndroidPermissionManager
 class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
 
-    val permissionManager = AndroidPermissionManager.from(this@MainActivity) { isGranted ->
+    val permissionManager = AndroidPermissionManager.from(this@MainActivity) { result ->
+        result.grantedPermissions.forEach {
 
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

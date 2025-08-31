@@ -1,6 +1,6 @@
 package com.jalaljankhan.pm
 
-class PermissionMapper {
+internal class PermissionMapper {
     fun toPermission(value: String): Permission {
         return when (value) {
             Permission.Camera.value -> Permission.Camera

@@ -16,10 +16,18 @@ class AndroidPermissionManager private constructor(
         ): PermissionManager {
             val launcher =
                 activity.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
-                    val granted = result?.entries?.filter { it.value }?.map { PermissionMapper().toPermission(it.key) }
-                    val denied = result?.entries?.filter { !it.value }?.map { PermissionMapper().toPermission(it.key) }
+                    val granted = result?.entries?.filter { it.value }
+                        ?.map { PermissionMapper().toPermission(it.key) } ?: emptyList()
 
-                    onPermissionResult.invoke(PermissionResult(grantedPermissions = granted, deniedPermissions = denied))
+                    val denied = result?.entries?.filter { !it.value }
+                        ?.map { PermissionMapper().toPermission(it.key) } ?: emptyList()
+
+                    onPermissionResult.invoke(
+                        PermissionResult(
+                            grantedPermissions = granted,
+                            deniedPermissions = denied
+                        )
+                    )
                 }
 
             return AndroidPermissionManager(launcher)
@@ -27,15 +35,22 @@ class AndroidPermissionManager private constructor(
 
         fun from(
             fragment: FragmentActivity,
-            onPermissionResult: (isGranted: Boolean) -> Unit
+            onPermissionResult: (permissionsStates: PermissionResult) -> Unit
         ): PermissionManager {
             val launcher =
                 fragment.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
-                    result.entries.forEach {
-                        println("${it.key} = ${it.value}")
-                    }
+                    val granted = result?.entries?.filter { it.value }
+                        ?.map { PermissionMapper().toPermission(it.key) } ?: emptyList()
 
-                    onPermissionResult.invoke(result.values.all { it })
+                    val denied = result?.entries?.filter { !it.value }
+                        ?.map { PermissionMapper().toPermission(it.key) } ?: emptyList()
+
+                    onPermissionResult.invoke(
+                        PermissionResult(
+                            grantedPermissions = granted,
+                            deniedPermissions = denied
+                        )
+                    )
                 }
 
             return AndroidPermissionManager(launcher)
