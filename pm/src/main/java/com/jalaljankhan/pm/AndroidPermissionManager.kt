@@ -27,7 +27,7 @@ class AndroidPermissionManager : PermissionManager {
     }
 
     //    private var mPermissionLauncher: ActivityResultLauncher<>
-    override fun requestRuntimePermissions(
+    override fun request(
         context: AppCompatActivity,
         permissions: Array<String>
     ) {

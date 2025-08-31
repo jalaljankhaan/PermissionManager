@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 interface PermissionManager {
     fun initialize(context: AppCompatActivity)
 
-    fun requestRuntimePermissions(
+    fun request(
         context: AppCompatActivity,
         permissions: Array<String>
     )
